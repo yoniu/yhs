@@ -1,5 +1,6 @@
 import {
   GET_BLOG_LIST,
+  GET_BLOG_SORT,
   GET_OPTIONS,
   GET_CURRENT_USER,
   LOGIN,
@@ -17,8 +18,22 @@ AV.init({
 
 export default {
 
-  async [GET_BLOG_LIST]({ commit }){
-
+  async [GET_BLOG_SORT]({ commit }){
+    try {
+      const sortTable = new Query('sort')
+      const result = await sortTable.find()
+      const table = []
+      result.map((obj) => {
+        table.push({
+          id: obj.id,
+          name: obj.get('name'),
+          description: obj.get('description')
+        })
+      })
+      commit(GET_BLOG_SORT, { state: 1, table })
+    } catch (e) {
+      commit(GET_BLOG_SORT, { state: 0, message: e.message })
+    }
   },
 
   async [GET_OPTIONS]({ commit }){

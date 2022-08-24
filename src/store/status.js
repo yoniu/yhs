@@ -1,7 +1,6 @@
-import { GET_BLOG_LIST } from './actionType'
-
 export default () => {
   list: [];
+  sort: {};
   navigation: [];
   option: [];
   currentUser: {};

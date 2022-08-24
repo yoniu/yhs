@@ -1,6 +1,10 @@
-import { GET_BLOG_LIST, GET_OPTIONS, GET_CURRENT_USER } from './actionType'
+import { GET_BLOG_SORT, GET_OPTIONS, GET_CURRENT_USER } from './actionType'
 
 export default {
+
+  [GET_BLOG_SORT](state, value){
+    state.sort = value
+  },
 
   [GET_OPTIONS](state, value){
     let arr = {};
