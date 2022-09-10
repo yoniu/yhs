@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue'
-import { RouterLink } from 'vue-router'
-import HelloWorld from './HelloWorld.vue'
-import Cravatar from './Cravatar.vue'
+  import { defineComponent } from 'vue'
+  import { RouterLink } from 'vue-router'
+  import HelloWorld from './HelloWorld.vue'
+  import Cravatar from './Cravatar.vue'
 
-const props = defineProps<{
-  options: any
-}>()
+  const props = defineProps<{
+    options: any
+  }>()
 
 </script>
 

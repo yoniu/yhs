@@ -1,23 +1,33 @@
 <script setup lang="ts">
   import { watchEffect } from 'vue'
   import { RouterView } from 'vue-router'
-  import { storeToRefs } from 'pinia'
-  import Header from './components/Header.vue'
+
   import { useSiteStore } from './stores/site'
-  const siteOption = useSiteStore()
-  siteOption.getSiteOptions()
-  const options = siteOption.siteOptions;
+
+  import { localOptions } from './config/default'
+  import { Status } from '@/config/enum'
+
+  import Header from './components/Header.vue'
+  import Loading from './components/Loading.vue'
+  const siteOptions = useSiteStore()
+  siteOptions.getSiteOptions()
+  const options = siteOptions.siteOptions;
   watchEffect(() => {
     if(typeof(options.values) == 'function')
-      document.title = options.get('site_name')
+      document.title = options.get('site_name') ?? localOptions.siteTitle
+    else
+      document.title = localOptions.siteTitle
   })
 </script>
 
 <template>
-  <Header id="header" :options="siteOption" />
+  <Header id="header" :options="siteOptions" />
   <div id="content">
     <RouterView />
   </div>
+  <Loading :site-mail="siteOptions.siteEmailMd5" :class="{
+    'hide': siteOptions.siteStatus == Status.success
+  }" />
 </template>
 
 <style lang="less" scoped>
