@@ -4,3 +4,8 @@ export enum Status {
   success,
   waiting
 }
+
+export enum NavType {
+  route = 'route',
+  link = 'link'
+}

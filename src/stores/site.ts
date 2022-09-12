@@ -1,19 +1,11 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import md5 from 'md5-js'
 
 import { localOptions } from '@/config/default'
 import { Status } from '@/config/enum'
 
-import AV from 'leancloud-storage'
+import AV from '@/config/leancloud'
 const { Query } = AV
-import { leancloud } from '@/config/leancloud'
-
-AV.init({
-  appId: leancloud.appId,
-  appKey: leancloud.appKey,
-  serverURL: leancloud.restAPI
-});
 
 export const useSiteStore = defineStore('site', {
   state: () => ({

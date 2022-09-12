@@ -1,13 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  --content-padding: 2rem;
+}
 body {
   margin: 0 auto;
   padding: 0;
   background-color: #eee;
 }
-* {
-  box-sizing: border-box;
-}
 #app {
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
+}
+
+@media only screen and (min-width : 320px) and (max-width : 767px) {
+  :root {
+    --content-padding: 1rem;
+  }
 }
