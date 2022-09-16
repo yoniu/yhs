@@ -27,7 +27,6 @@ export const useNavStore = defineStore('navigation', {
           })
         })
       }).then(() => {
-        console.log(this.nav)
         this.setNavStatus(Status.success)
       }).catch((e) => {
         this.setNavStatus(Status.error)

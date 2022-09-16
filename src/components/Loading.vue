@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(-45deg, #FA897B, #FFDD94);
+  background-image: linear-gradient(-45deg, #2aae67, #00c250);
   transition: all 1s ease-in-out;
   z-index: 3;
 

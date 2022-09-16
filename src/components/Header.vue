@@ -5,14 +5,15 @@
   import Navigation from './Navigation.vue'
 
   const props = defineProps<{
-    options: any
+    options: any,
+    nav: any
   }>()
 
 </script>
 
 <template>
   <header>
-    <Navigation />
+    <Navigation :nav="nav" />
     <div class="header-image" :style="`--background: url(${options.siteOptions.get('site_header_image')})`"></div>
     <div class="header-bloger">
       <span class="header-title">{{ options.siteOptions.get('site_name') }}</span>

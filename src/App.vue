@@ -5,6 +5,7 @@
 
   // pinia
   import { useSiteStore } from './stores/site'
+  import { useNavStore } from './stores/navigation'
 
   // 本地设置
   import { localOptions } from './config/default'
@@ -15,9 +16,12 @@
   import Loading from './components/Loading.vue'
 
   // pinia 获取设置
-  const siteOptions = useSiteStore()
-  siteOptions.getSiteOptions()
-  const options = siteOptions.siteOptions;
+  const siteOption = useSiteStore()
+  siteOption.getSiteOptions()
+  const options = siteOption.siteOptions
+  const navOption = useNavStore()
+  navOption.getNavigation()
+
   // 获取页面标题
   watchEffect(() => {
     if(typeof(options.values) == 'function')
@@ -42,13 +46,13 @@
 
 <template>
   <div id="container" :style="`--width: ${appWidth}px`">
-    <Header id="header" :options="siteOptions" />
+    <Header id="header" :options="siteOption" :nav="navOption" />
     <div id="content">
       <RouterView />
     </div>
   </div>
-  <Loading :site-mail="siteOptions.siteEmailMd5" :class="{
-    'hide': siteOptions.siteStatus == Status.success
+  <Loading :site-mail="siteOption.siteEmailMd5" :class="{
+    'hide': siteOption.siteStatus == Status.success && navOption.navStatus == Status.success
   }" />
 </template>
 
