@@ -12,6 +12,7 @@
   import { Status } from '@/config/enum'
 
   // 组件
+  import { NDialogProvider } from 'naive-ui'
   import Header from './components/Header.vue'
   import Loading from './components/Loading.vue'
 
@@ -45,15 +46,17 @@
 </script>
 
 <template>
-  <div id="container" :style="`--width: ${appWidth}px`">
-    <Header id="header" :options="siteOption" :nav="navOption" />
-    <div id="content">
-      <RouterView />
+  <n-dialog-provider>
+    <div id="container" :style="`--width: ${appWidth}px`">
+      <Header id="header" :options="siteOption" :nav="navOption" />
+      <div id="content">
+        <RouterView />
+      </div>
     </div>
-  </div>
-  <Loading :site-mail="siteOption.siteEmailMd5" :class="{
-    'hide': siteOption.siteStatus == Status.success && navOption.navStatus == Status.success
-  }" />
+    <Loading :site-mail="siteOption.siteEmailMd5" :class="{
+      'hide': siteOption.siteStatus == Status.success && navOption.navStatus == Status.success
+    }" />
+  </n-dialog-provider>
 </template>
 
 <style lang="less" scoped>

@@ -5,8 +5,12 @@
   import { RouterLink } from 'vue-router'
 
   import { NavType } from '../config/enum'
+
   import IconMenu from '../components/icons/IconMenu.vue'
+  import IconPeople from '../components/icons/IconPeople.vue'
+
   import Render from './Render.vue'
+  import Login from './Login.vue'
 
   const props = defineProps<{
     nav: any
@@ -52,7 +56,7 @@
     <div class="header-navigation">
       <div class="header-navigation-left">
         <n-popselect
-          size="medium"
+          size="small"
           scrollable
         >
           <a class="header-navigation-button" href="javascript:;"><icon-menu /></a>
@@ -60,9 +64,25 @@
             导航
           </template>
           <template #action>
-            <template v-for="item in MenuOptions">
-              <Render :h="item"></Render>
-            </template>
+            <div class="navigation-button-list">
+              <template v-for="item in MenuOptions">
+                <Render :h="item" class="navigation-button"></Render>
+              </template>
+            </div>
+          </template>
+        </n-popselect>
+      </div>
+      <div class="header-navigation-right">
+        <n-popselect
+          size="medium"
+          scrollable
+        >
+          <a class="header-navigation-button" href="javascript:;"><icon-people /></a>
+          <template #empty>
+            登陆
+          </template>
+          <template #action>
+            <Login></Login>
           </template>
         </n-popselect>
       </div>
@@ -85,16 +105,35 @@
 
     .icon {
       color: #fff;
+      font-size: 1.1rem;
     }
 
     .header-navigation-button {
-      padding: 5px 8px;
+      padding: 8px;
       border-radius: 5px;
       line-height: 1;
       transition: .3s background-color ease-in-out;
 
       &:hover, &:focus {
         background-color: rgba(0, 0, 0, .1)
+      }
+    }
+  }
+  .navigation-button-list {
+    display: grid;
+    grid-row-gap: .5rem;
+
+    .navigation-button {
+      text-align: center;
+      color: #576B95;
+      text-decoration: none;
+      padding: 5px;
+      line-height: 1;
+      border-radius: 5px;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        background-color: rgba(0, 0, 0, .1);
       }
     }
   }
