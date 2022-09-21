@@ -1,30 +1,35 @@
 <script setup lang="ts">
   // vue
-  import { watchEffect, ref, onMounted } from 'vue'
+  import { watchEffect, ref, onMounted, provide } from 'vue'
   import { RouterView } from 'vue-router'
 
   // pinia
-  import { useSiteStore } from './stores/site'
-  import { useNavStore } from './stores/navigation'
+  import { useSiteStore } from '@/stores/site'
+  import { useNavStore } from '@/stores/navigation'
+  import { useUserStore } from '@/stores/user'
 
   // 本地设置
-  import { localOptions } from './config/default'
+  import { localOptions } from '@/config/default'
   import { Status } from '@/config/enum'
 
   // 组件
-  import { NDialogProvider } from 'naive-ui'
-  import Header from './components/Header.vue'
-  import Loading from './components/Loading.vue'
+  import { NDialogProvider, NMessageProvider } from 'naive-ui'
+  import Header from '@/components/Header.vue'
+  import Loading from '@/components/Loading.vue'
 
   // pinia 获取设置
   const siteOption = useSiteStore()
-  siteOption.getSiteOptions()
-  const options = siteOption.siteOptions
   const navOption = useNavStore()
+  const user = useUserStore()
+  siteOption.getSiteOptions()
   navOption.getNavigation()
+  user.getUserLoginMessage()
+
+  provide('loginStatus', user.loginStatus)
 
   // 获取页面标题
   watchEffect(() => {
+    const options = siteOption.siteOptions
     if(typeof(options.values) == 'function')
       document.title = options.get('site_name') ?? localOptions.siteTitle
     else
@@ -47,15 +52,17 @@
 
 <template>
   <n-dialog-provider>
-    <div id="container" :style="`--width: ${appWidth}px`">
-      <Header id="header" :options="siteOption" :nav="navOption" />
-      <div id="content">
-        <RouterView />
+    <n-message-provider>
+      <div id="container" :style="`--width: ${appWidth}px`">
+        <Header id="header" :options="siteOption" :nav="navOption" />
+        <div id="content">
+          <RouterView />
+        </div>
       </div>
-    </div>
-    <Loading :site-mail="siteOption.siteEmailMd5" :class="{
-      'hide': siteOption.siteStatus == Status.success && navOption.navStatus == Status.success
-    }" />
+      <Loading :site-mail="siteOption.siteEmailMd5" :class="{
+        'hide': siteOption.siteStatus == Status.success && navOption.navStatus == Status.success
+      }" />
+    </n-message-provider>
   </n-dialog-provider>
 </template>
 

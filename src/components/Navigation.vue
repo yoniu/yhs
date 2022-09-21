@@ -1,22 +1,31 @@
 <script lang="ts" setup>
 
-  import { ref, reactive, watchEffect, h } from 'vue'
-  import { NAffix, NPopselect, NMenu } from 'naive-ui'
+  import { reactive, watchEffect, h } from 'vue'
   import { RouterLink } from 'vue-router'
 
-  import { NavType } from '../config/enum'
+  import { useUserStore } from '@/stores/user'
 
-  import IconMenu from '../components/icons/IconMenu.vue'
-  import IconPeople from '../components/icons/IconPeople.vue'
+  import { NavType, Status } from '@/config/enum'
+
+  import IconMenu from '@/components/icons/IconMenu.vue'
+  import IconPeople from '@/components/icons/IconPeople.vue'
+
+  import { NAffix, NPopselect, useDialog, useMessage } from 'naive-ui'
 
   import Render from './Render.vue'
   import Login from './Login.vue'
+
+  const message = useMessage()
+  const dialog = useDialog()
 
   const props = defineProps<{
     nav: any
   }>()
 
   const MenuOptions = reactive([] as any[])
+
+  const userStore = useUserStore()
+  const { loginStatus } = userStore
 
   watchEffect(() => {
     const { nav } = props.nav
@@ -49,6 +58,20 @@
     }
   })
 
+  const handleLogOut = () => {
+    dialog.warning({
+      title: '提示：',
+      content: '是否确定退出登录？',
+      positiveText: '确定',
+      negativeText: '取消',
+      onPositiveClick: () => {
+        message.success('注销成功')
+        userStore.LogOut()
+        window.location.reload()
+      }
+    })
+  }
+
 </script>
 
 <template>
@@ -79,10 +102,14 @@
         >
           <a class="header-navigation-button" href="javascript:;"><icon-people /></a>
           <template #empty>
-            登陆
+            {{ loginStatus.status == Status.success ? userStore.user.get('username') : '用户登陆' }}
           </template>
           <template #action>
-            <Login></Login>
+            <Login v-if="loginStatus.status != Status.success"></Login>
+            <div class="user-navigation-button-list" v-if="loginStatus.status == Status.success">
+              <a class="navigation-button" href="javascript:;">发圈</a>
+              <a class="navigation-button" href="javascript:;" @click="handleLogOut()">注销</a>
+            </div>
           </template>
         </n-popselect>
       </div>
@@ -119,7 +146,7 @@
       }
     }
   }
-  .navigation-button-list {
+  .navigation-button-list, .user-navigation-button-list {
     display: grid;
     grid-row-gap: .5rem;
 

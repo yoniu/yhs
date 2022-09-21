@@ -25,15 +25,24 @@ export const useUserStore = defineStore('user', {
       this.user = user
     },
     getUserLoginMessage() {
-
+      const currentUser = User.current()
+      if (currentUser) {
+        this.setUserStatus(Status.success)
+        this.setUser(currentUser)
+      }
     },
-    Login(username: string, password: string) {
-      User.logIn(username, password).then((user) => {
+    async Login(username: string, password: string) {
+      try {
+        const user = await User.logIn(username, password)
         this.setUser(user)
         this.setUserStatus(Status.success)
-      }).catch((e) => {
-        this.setUserStatus(Status.error)
-      })
+      } catch(e: any) {
+        this.setUserStatus(Status.error, e.message as string)
+      }
+    },
+    LogOut() {
+      User.logOut()
+      this.getUserLoginMessage()
     }
   }
 })
